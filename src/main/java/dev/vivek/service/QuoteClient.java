@@ -1,5 +1,6 @@
 package dev.vivek.service;
 
+import dev.vivek.bindings.Quote;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -7,13 +8,15 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class QuoteClient {
 
-    public String invokeRandomQuoteApi() {
-        String apiUrl = "https://fakestoreapi.com/products";
+    public ResponseEntity<Quote> invokeRandomQuoteApi() {
+        String apiUrl = "https://api.quotable.io/random";
         RestTemplate rt = new RestTemplate();
-        ResponseEntity<String> responseEntity = rt.getForEntity(apiUrl, String.class);
+        ResponseEntity<Quote> responseEntity = rt.getForEntity(apiUrl, Quote.class);
         int statusCode = responseEntity.getStatusCodeValue();
         if(statusCode == 200){
-            return responseEntity.getBody();
+            Quote quote = responseEntity.getBody();
+            quote.setContent(quote.getContent().toUpperCase());
+            return responseEntity;
         }
         return null;
     }
