@@ -1,0 +1,3 @@
+app:
+  messages:
+    quoteApiUrl: https://api.quotable.io/random
